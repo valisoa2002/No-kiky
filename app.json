@@ -15,23 +15,32 @@
       ],
       "versionCode": 3
     },
+
     "plugins": [
       [
         "expo-camera",
         {
-          "cameraPermission": "No-kiky utilise la camera pour scanner les cartes de recharge.",
+          "cameraPermission": "Autoriser No-kiky à scanner les cartes",
           "recordAudioAndroid": false
         }
       ],
-      "expo-asset",
-      "expo-build-properties",
-      "expo-build-properties",
-      {
-        "android": {
-          "usesCleartextTraffic": true
+      [
+        "expo-mlkit-ocr",
+        {
+          "iosEngine": "auto"
         }
-      }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": false,
+            "enableShrinkResourcesInReleaseBuilds": false
+          }
+        }
+      ]
     ],
+
     "extra": {
       "eas": {
         "projectId": "37210cee-ba87-4650-bfb0-a73079f855c3"

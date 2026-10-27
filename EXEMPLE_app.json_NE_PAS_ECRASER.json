@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "No-kiky",
+    "slug": "no-kiky",
+    "version": "0.4.0",
+    "icon": "./assets/no-kiky-icon.png",
+    "android": {
+      "package": "mg.nokiky.app",
+      "versionCode": 4,
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "No-kiky utilise la camera pour scanner les cartes de recharge.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-mlkit-ocr",
+        {
+          "iosEngine": "auto"
+        }
+      ]
+    ]
+  }
+}

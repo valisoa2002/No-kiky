@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { getOcrApiUrl, readCodesAndDeleteImage } from '../core/ocr';
+import { readCodesAndDeleteImage } from '../core/ocr';
 import { NETWORKS } from '../core/recharge';
 import ActionButton from '../components/ActionButton';
 import { colors } from '../theme/colors';
@@ -25,23 +25,15 @@ export default function ScanScreen({ networkId, onBack, onCode, onManual }) {
   const [autoMode, setAutoMode] = useState(false);
   const [scanHint, setScanHint] = useState('Cadrez les chiffres puis appuyez sur Scanner.');
   const network = NETWORKS[networkId];
-  const apiUrl = getOcrApiUrl();
 
   useEffect(() => () => { mountedRef.current = false; }, []);
 
   const scanPhoto = useCallback(async (automatic = false) => {
     if (!ready || !cameraRef.current || busyRef.current) return;
-    if (!apiUrl) {
-      Alert.alert(
-        'Serveur OCR non configure',
-        'Dans le fichier .env, definissez EXPO_PUBLIC_OCR_API_URL=http://IP_DU_PC:3001 puis redemarrez Expo.',
-      );
-      return;
-    }
 
     busyRef.current = true;
     setBusy(true);
-    setScanHint('Lecture OCR en cours ; ouverture du téléphone après détection...');
+    setScanHint('Reconnaissance hors ligne en cours ; ouverture du téléphone après détection...');
 
     try {
       const picture = await cameraRef.current.takePictureAsync({
@@ -70,14 +62,14 @@ export default function ScanScreen({ networkId, onBack, onCode, onManual }) {
       }
     } catch (error) {
       if (!mountedRef.current) return;
-      setAutoMode(false); // Ne pas saturer le serveur si le reseau tombe.
+      setAutoMode(false); // Stopper la reconnaissance automatique en cas d'erreur locale.
       setScanHint(error.message || 'Erreur de scan');
       if (!automatic) Alert.alert('Echec du scan', error.message || 'Reessayez.');
     } finally {
       busyRef.current = false;
       if (mountedRef.current) setBusy(false);
     }
-  }, [apiUrl, onCode, onManual, ready]);
+  }, [onCode, onManual, ready]);
 
   useEffect(() => {
     if (!permission?.granted || !ready || !autoMode) return undefined;
@@ -153,9 +145,9 @@ export default function ScanScreen({ networkId, onBack, onCode, onManual }) {
       </View>
 
       <View style={styles.connectionPanel}>
-        <Text style={styles.connectionTitle}>API OCR (ordinateur)</Text>
-        <Text style={styles.connectionText} selectable>{apiUrl || 'Adresse manquante dans .env'}</Text>
-        <Text style={styles.connectionHelp}>Le telephone et le PC doivent etre sur le meme reseau Wi-Fi. Un serveur Node.js doit ecouter sur le port 3001.</Text>
+        <Text style={styles.connectionTitle}>OCR LOCAL - MODE HORS LIGNE</Text>
+        <Text style={styles.connectionText}>Le code est reconnu directement sur votre telephone.</Text>
+        <Text style={styles.connectionHelp}>Aucune connexion Wi-Fi, Internet ni serveur OCR n'est necessaire. Une couverture reseau mobile reste necessaire pour effectuer la recharge.</Text>
       </View>
 
       <View style={styles.bottom}>
