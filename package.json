@@ -1,0 +1,28 @@
+{
+  "name": "no-kiky",
+  "version": "0.2.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "expo start --go",
+    "start:clear": "expo start --go -c",
+    "doctor": "expo-doctor",
+    "test": "node --experimental-default-type=module --test tests/*.test.js"
+  },
+  "dependencies": {
+    "babel-preset-expo": "~58.0.0",
+    "expo": "^58.0.0",
+    "expo-asset": "~58.0.18",
+    "expo-build-properties": "~58.0.11",
+    "expo-camera": "~58.0.12",
+    "expo-clipboard": "~58.0.4",
+    "expo-file-system": "~58.0.11",
+    "react": "19.3.0",
+    "react-native": "0.88.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "babel-preset-expo": "~58.0.0"
+  },
+  "overrides": {}
+}
